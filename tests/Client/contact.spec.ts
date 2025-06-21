@@ -1,6 +1,5 @@
 import { test, expect } from '@playwright/test';
 import { ClientPage } from '../../pages/ClientPage';
-import { BasePage } from '../../pages/BasePage';
 import { TestData } from '../../utils/TestData';
 
 test.describe('Create Contact as a Client', () => {
@@ -13,23 +12,30 @@ test.describe('Create Contact as a Client', () => {
     await clientPage.clickAddClient();
     await clientPage.fillClientDetails(TestData.clientName);
     await clientPage.saveClient();
+    
+    // Navigate back and select client to add location
     await clientPage.navigateToClients();
-     await clientPage.selectclient();
-
-    await clientPage.fillClientlocation();
+    await clientPage.selectClient();
+    await clientPage.fillClientLocation();
     
     // Verify client was created
     //await expect(page.getByText(TestData.clientName)).toBeVisible();
   });
+
   test.skip("should edit client", async ({ page }) => {
     const clientEdit = new ClientPage(page);
-    // ...edit test steps here
+    
     await clientEdit.navigateToClients();
-    await clientEdit.selectclient();
-    await clientEdit.editclient();
+    await clientEdit.selectClient();
+    await clientEdit.editClient();
     await clientEdit.saveClient();
   });
-  test("Add location in the Client Grid" , ({page})=>{
 
-  })
+  test("Add location in the Client Grid", async ({ page }) => {
+    const clientPage = new ClientPage(page);
+    
+    await clientPage.navigateToClients();
+    await clientPage.selectClient();
+    await clientPage.fillClientLocation();
+  });
 });
