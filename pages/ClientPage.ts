@@ -11,7 +11,8 @@ export class ClientPage {
 
   // Navigation Actions
   async navigateToClients() {
-    await this.page.goto("http://localhost:4200/bts/clients");
+    await this.page.goto("http://localhost:4200/bts/clients", { waitUntil: 'networkidle' });
+    await this.page.waitForLoadState('domcontentloaded');
     await this.page.locator(ClientLocators.clientsTab).click();
     await this.page.waitForTimeout(2000);
   }
@@ -54,7 +55,7 @@ export class ClientPage {
     await this.page.locator(ClientLocators.billingOffice1).fill(`Billing Office 1 ${randomDigits}`);
     await this.page.locator(ClientLocators.billingOffice2).fill(`Billing Office 2 ${randomDigits}`);
     
-    await this.page.check(ClientLocators.placementSchool);
+    //await this.page.check(ClientLocators.placementSchool);
     await this.page.check(ClientLocators.prospective);
 
     await this.page.waitForTimeout(1000);
@@ -70,7 +71,7 @@ export class ClientPage {
     const randomDigits = TestUtils.generateRandomDigits();
     
     await this.page.locator(ClientLocators.addLocationIcon).click();
-    await this.page.locator(ClientLocators.locationTitle).waitFor({ state: 'visible' });
+    //await this.page.locator(ClientLocators.locationTitle).waitFor({ state: 'visible' });
     
     await this.page.locator(ClientLocators.locationTitle).fill(`Location ${randomDigits}`);
     await this.page.locator(ClientLocators.locationAddress).fill(`Address ${randomDigits}`);

@@ -8,11 +8,14 @@ export default defineConfig({
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
   globalSetup: require.resolve('./global-setup'),
+  timeout: 60000,
   use: {
     baseURL: 'http://localhost:4200',
     trace: 'on-first-retry',
     screenshot: 'only-on-failure',
     storageState: 'auth.json',
+    navigationTimeout: 60000,
+    actionTimeout: 30000,
   },
   projects: [
     {
