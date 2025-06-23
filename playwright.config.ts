@@ -7,7 +7,8 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
   reporter: 'html',
-  globalSetup: require.resolve('./global-setup'),
+  // globalSetup: require.resolve('./scripts/global-setup'),
+
   timeout: 60000,
   use: {
     baseURL: 'http://localhost:4200',

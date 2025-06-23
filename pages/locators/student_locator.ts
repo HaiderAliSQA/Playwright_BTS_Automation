@@ -2,14 +2,16 @@ export class Studentlocator {
   // Student Navigation Locators
   static readonly studentsTab = "//span[normalize-space()='Students']";
   static readonly addStudentButton = "//button[@title='Create Student']";
-  static readonly saveStudentButton = "//button[normalize-space()='Save']";
+  static readonly saveStudentButton =
+    "//button[normalize-space()='Save and Close']";
 
   // Student Form Locators
   static readonly studentNameInput = "//input[@name='studentName']";
   static readonly studentEmailInput = "//input[@name='email']";
   static readonly studentPhoneInput = "//input[@name='phone']";
   static readonly studentAddressInput = "//input[@name='address']";
-  static readonly addServicebutton = "//button[normalize-space()='Add Service']";
+  static readonly addServicebutton =
+    "//button[normalize-space()='Add Service']";
 
   // Student Name Fields
   static readonly StudentfirstName = "//input[@name='firstName']";
@@ -38,5 +40,5 @@ export class Studentlocator {
   static readonly SelectServiceTypes =
     "//select[@class='browser-default custom-select ng-untouched ng-pristine ng-valid']";
   static readonly PONumerStudentGrid =
-    "//input[@class='form-control ng-pristine ng-valid ng-touched']";
+    "//div[@class='card-body pt-0']//div[@class='col-md-4']//input[contains(@placeholder,'')]";
 }

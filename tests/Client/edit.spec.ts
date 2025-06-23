@@ -6,8 +6,8 @@ test.describe("yahan hum client ko Edit kren gen", () =>  {
     const clientEdit = new ClientPage(page);
     // ...edit test steps here
     await clientEdit.navigateToClients();
-    await clientEdit.selectclient();
-    await clientEdit.editclient();
+    await clientEdit.selectClient();
+    await clientEdit.editClient();
     await clientEdit.saveClient();
     });
 })

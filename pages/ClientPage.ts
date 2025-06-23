@@ -1,6 +1,7 @@
 import { Page } from '@playwright/test';
 import { ClientLocators } from './locators/ClientLocators';
 import { TestUtils } from '../utils/TestUtils';
+import { chromium } from 'playwright';
 
 export class ClientPage {
   readonly page: Page;
@@ -11,10 +12,24 @@ export class ClientPage {
 
   // Navigation Actions
   async navigateToClients() {
-    await this.page.goto("http://localhost:4200/bts/clients", { waitUntil: 'networkidle' });
-    await this.page.waitForLoadState('domcontentloaded');
-    await this.page.locator(ClientLocators.clientsTab).click();
-    await this.page.waitForTimeout(2000);
+    try {
+      await this.page.goto("http://localhost:4200/bts/clients");
+      
+      await this.page.waitForLoadState('domcontentloaded');
+      await this.page.waitForTimeout(5000);
+      
+      // Wait for the clients tab to be visible and clickable
+      await this.page.waitForSelector(ClientLocators.clientsTab, { 
+        state: 'visible',
+        timeout: 30000 
+      });
+      
+      await this.page.click(ClientLocators.clientsTab);
+      await this.page.waitForTimeout(2000);
+    } catch (error) {
+      console.error('Error during navigation:', error);
+      throw error;
+    }
   }
 
   async clickClientsTab() {
@@ -82,7 +97,3 @@ export class ClientPage {
     await this.page.locator(ClientLocators.saveButton).click();
   }
 }
-
-//     // Yahan aur bhi tests add kar sakte hain
-
-//  // <-- Close test.describe.serial here
