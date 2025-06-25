@@ -96,4 +96,7 @@ export class ClientPage {
     
     await this.page.locator(ClientLocators.saveButton).click();
   }
+
+  async FillActivitydetail(Activitytitle : string ){
+  }
 }

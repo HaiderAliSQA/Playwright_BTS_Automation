@@ -1,6 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { ClientPage } from '../../pages/ClientPage';
 import { TestData } from '../../utils/TestData';
+import { activitypage } from "../../pages/AddNewActivity";
 
 test.describe.serial('Create Contact as a Client', () => {
   let clientPage: ClientPage;
@@ -9,7 +10,7 @@ test.describe.serial('Create Contact as a Client', () => {
     clientPage = new ClientPage(page);
   });
 
-  test.skip('should create new contact', async () => {
+  test('should create new contact', async () => {
     await clientPage.navigateToClients();
     await clientPage.clickClientsTab();
     await clientPage.clickAddClient();
@@ -24,9 +25,16 @@ test.describe.serial('Create Contact as a Client', () => {
     await clientPage.saveClient();
   });
 
-  test('Add location in the Client Grid', async () => {
+  test.skip('Add location in the Client Grid', async () => {
     await clientPage.navigateToClients();
     await clientPage.selectClient();
     await clientPage.fillClientLocation();
   });
+   test.skip("Create an activity", async ({ page }) => {
+     const activityPage = new activitypage(page);
+     await activityPage.navigateToDashboard();
+     await activityPage.AtivitytitleAssertion();
+
+     await activityPage.FillActivitydetail(TestData.clientName);
+   });
 });

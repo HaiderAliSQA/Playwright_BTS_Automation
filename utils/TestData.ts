@@ -1,4 +1,5 @@
 export const TestData = {
-    clientName: "Playwright Test Client",
-    // other test data
+  Activitytitle: "Add New Activity",
+  clientName: "Playwright Test Client",
+  // other test data
 }; 

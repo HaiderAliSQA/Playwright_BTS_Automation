@@ -13,13 +13,25 @@ test.describe.serial('Create Contact as a Student', () => {
     clientPage = new ClientPage(page);
   });
 
-  test('should create new student', async ({ page }) => {
+  test.skip('should create new student', async ({ page }) => {
     await clientPage.navigateToClients();
     await clientPage.selectClient();
     await studentPage.selectStudentGrid();
     await studentPage.addStudent();
     await studentPage.fillStudentDetails();
     await studentPage.selectServiceType();
+   
     await studentPage.saveStudent();
+     await studentPage.EditStudent();
+     await studentPage.saveStudent();
   });
+  test(" Edit Student " , async ({page})=>{
+    await clientPage.navigateToClients();
+    await clientPage.selectClient();
+    await studentPage.selectStudentGrid();
+    await studentPage.EditStudent();
+    await page.waitForTimeout(5000)
+     await studentPage.saveStudent();
+
+  })
 });

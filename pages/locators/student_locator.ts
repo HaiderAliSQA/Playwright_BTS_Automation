@@ -35,6 +35,8 @@ export class Studentlocator {
   static readonly studentIdInput = "//input[@name='studentId']";
   static readonly studentGradeInput = "//select[@name='grade']";
   static readonly studentSchoolInput = "//input[@name='school']";
+  static readonly studentEdit = "//tbody/tr[2]/td[6]/div[1]/edit-delete-btns[1]/div[1]/a[5]/span[1]";
+
 
   // Service Type Locators
   static readonly SelectServiceTypes =
