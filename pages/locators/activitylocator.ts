@@ -33,4 +33,5 @@ export const activitylocator = {
   ActivityStudentDropdownContainer:
     "//ng-select[@name='students']//span[@class='ng-arrow-wrapper']",
   StudentSearchInput: "//ng-select[@name='students']//input[@type='text']",
+  Activity_Notes: "//textarea[@name='activityNote']",
 };

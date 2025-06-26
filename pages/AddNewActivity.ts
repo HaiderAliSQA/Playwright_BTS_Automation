@@ -17,48 +17,74 @@ export class activitypage {
     await this.page.locator(activitylocator.AddNewActivity).click();
   }
 
-  async FillActivitydetail() {
-    console.log("FillActivitydetail called");
+  async Activity_Titile_Notes() {
     const randomName = TestUtils.generateRandomClientName();
-    console.log(randomName);
+    //console.log(randomName);
     // Name Fill
-
-    const titleField = this.page.locator(activitylocator.activityName);
-    await titleField.waitFor({ state: "visible" });
-    await expect(titleField).toBeEnabled();
-    await titleField.fill(`Activity Form playwright ${randomName}`);
-
+    const title = this.page.locator(activitylocator.activityName);
+    const titile_Notes = await `Activity Form playwright  ${randomName}`;
+    await title.fill(titile_Notes);
+    const Notes = this.page.locator(activitylocator.Activity_Notes);
+    await Notes.fill(titile_Notes);
+  }
+  async selectProvider(partialProviderName: string) {
     //Select provider
     await this.page.locator(activitylocator.WBSDropdownContainer).click();
     await this.page
       .locator(activitylocator.providerSearchinput)
-      .fill(" UI Test");
-    await this.page.locator(".ng-option:has-text('UI Test')");
+      .fill(partialProviderName);
 
-    // Step 1: Dropdown ko click karke open karein
-    console.log("Dropdown selector:", activitylocator.clientDropdownContainer);
-    await this.page.locator(activitylocator.clientDropdownContainer).click();
-    // Select Client
-
-    await this.page
-      .locator(activitylocator.clientSearchInput)
-      .fill("Client Simple Activity");
-
-    await this.page.locator('.ng-option:has-text("Client Simple Activity")').click();
-    //Select Client Location
-    await this.page.locator(activitylocator.clientLocationDropdownContainer).click();
-    await this.page.locator(activitylocator.clientLocationInput).fill("Location");
-    // 2nd value select karni ho to index 1
-   await this.page.locator('.ng-option:has-text("Location")').click();
-
-    // select WBS
-    await this.page.locator(activitylocator.activityDropdownContainer).click();
-    await this.page.waitForTimeout(5000);
-    await this.page.locator(activitylocator.SelectWBS).fill("BTO");
-    await this.page.locator('.ng-option:has-text("BTO")').click();
+    const matchingprovider = this.page.locator(
+      `.ng-option:has-text("${partialProviderName}")`
+    );
+    const providerCount = await matchingprovider.count();
+    if (providerCount > 0) {
+      await matchingprovider.first().click();
+      console.log(
+        `Selected student with partial match: ${partialProviderName}`
+      );
+    } else {
+      throw new Error(
+        `No student found with partial name: ${partialProviderName}`
+      );
+    }
   }
 
-  async simpleActivityTime () {
+  async SelectClient(partialClientName: string) {
+    await this.page
+      .locator(activitylocator.clientSearchInput)
+      .fill(partialClientName);
+    const MatchingClientName = this.page.locator(
+      `.ng-option:has-text("${partialClientName}")`
+    );
+    const clientCount = await MatchingClientName.count();
+    if (clientCount > 0) {
+      await MatchingClientName.first().click();
+      console.log(`Selected student with partial match: ${partialClientName}`);
+    } else {
+      throw new Error(
+        `No student found with partial name: ${partialClientName}`
+      );
+    }
+  }
+
+  async SelectWBSActivityName(partialWBSName: string) {
+    await this.page.locator(activitylocator.activityDropdownContainer).click();
+    // await this.page.waitForTimeout(5000);
+    await this.page.locator(activitylocator.SelectWBS).fill(partialWBSName);
+    const MatchingWBS = this.page.locator(
+      `.ng-option:has-text("${partialWBSName}")`
+    );
+    const countWBS = await MatchingWBS.count();
+    if (countWBS > 0) {
+      await MatchingWBS.first().click();
+      console.log(`Selected student with partial match: ${partialWBSName}`);
+    } else {
+      throw new Error(`No student found with partial name: ${partialWBSName}`);
+    }
+  }
+
+  async simpleActivityTime() {
     console.log(" lfhewofhwoh");
     const date = TestUtils.generateRandomPastDate();
     console.log("Rendum date ", date);
@@ -73,21 +99,73 @@ export class activitypage {
     //await this.page.waitForTimeout(8000);
 
     // 1. Open the dropdown
-    const activityduration = this.page.locator(
-      activitylocator.activityduration
-    );
-    //await activityduration.click(); // (optional, for UI)
-    await this.page.waitForTimeout(5000);
-    // await activityduration.selectOption({ label: "15 Min" });
-    // this.page.waitForTimeout(5000)
-  }
-async SelectStudent(){
-  await this.page.locator(activitylocator.ActivityStudentDropdownContainer).click();
-  await this.page.locator(activitylocator.StudentSearchInput).fill ("Student");
-   await this.page.locator('.ng-option:has-text("Student")').click();
+    const activityduration = this.page.locator(activitylocator.activityduration);
 
-}
+    await this.page.waitForTimeout(5000);
+  }
+  async selectStudent(partialName: string) {
+    await this.page
+      .locator(activitylocator.ActivityStudentDropdownContainer)
+      .click();
+    await this.page
+      .locator(activitylocator.StudentSearchInput)
+      .fill(partialName);
+    // await this.page.waitForTimeout(1000); // give time to populate results
+
+    // Find any option that contains the partial name
+    const matchingOption = this.page.locator(
+      `.ng-option:has-text("${partialName}")`
+    );
+    const count = await matchingOption.count();
+
+    if (count > 0) {
+      await matchingOption.first().click();
+      console.log(`Selected student with partial match: ${partialName}`);
+    } else {
+      throw new Error(`No student found with partial name: ${partialName}`);
+    }
+  }
+  async selectClientLocation(partialClientLocationNamee: string) {
+    console.log(" Haider KAJDFksfneonoen");
+    //Select Client Location
+    await this.page
+      .locator(activitylocator.clientLocationDropdownContainer)
+      .click();
+    await this.page
+      .locator(activitylocator.clientLocationInput)
+      .fill(partialClientLocationNamee);
+
+    const matchingLocation = this.page.locator(
+      `.ng-option:has-text("${partialClientLocationNamee}")`
+    );
+    const LocationCount = await matchingLocation.count();
+    console.log(" ye hy location ", matchingLocation);
+    if (LocationCount > 0) {
+      await matchingLocation.first().click();
+      console.log(
+        `Selected student with partial match: ${partialClientLocationNamee}`
+      );
+    } else {
+      throw new Error(
+        `No student found with partial name: ${partialClientLocationNamee}`
+      );
+    }
+  }
+
   async RepeatDailyAfter() {
+
+    const CurrentDate = TestUtils.getCurrentDate();
+    console.log("CurrentDate ", CurrentDate);
+
+    await this.page
+      .locator(activitylocator.activityStartDate)
+      .fill(CurrentDate);
+    await this.page.waitForTimeout(5000);
+    const activityTime = TestUtils.generateRandomTime();
+    console.log(" Start time of Activity ", activityTime);
+    await this.page
+      .locator(activitylocator.activityStartTime)
+      .fill(activityTime);
     const RepeatsType = this.page.locator(activitylocator.ActivityType);
 
     await RepeatsType.selectOption({ label: "Daily" });
@@ -99,6 +177,18 @@ async SelectStudent(){
     await this.page.locator(activitylocator.After_end_date).fill(`${end_Date}`);
   }
   async RepeatDailyON() {
+    const CurrentDate = TestUtils.getCurrentDate();
+    console.log("CurrentDate ", CurrentDate);
+
+    await this.page
+      .locator(activitylocator.activityStartDate)
+      .fill(CurrentDate);
+    await this.page.waitForTimeout(5000);
+    const activityTime = TestUtils.generateRandomTime();
+    console.log(" Start time of Activity ", activityTime);
+    await this.page
+      .locator(activitylocator.activityStartTime)
+      .fill(activityTime);
     const RepeatsType = this.page.locator(activitylocator.ActivityType);
 
     await RepeatsType.selectOption({ label: "Daily" });
@@ -113,6 +203,15 @@ async SelectStudent(){
   }
 
   async RepeatWeeklyAfter() {
+const CurrentDate = TestUtils.getCurrentDate();
+console.log("CurrentDate ", CurrentDate);
+
+await this.page.locator(activitylocator.activityStartDate).fill(CurrentDate);
+await this.page.waitForTimeout(5000);
+const activityTime = TestUtils.generateRandomTime();
+console.log(" Start time of Activity ", activityTime);
+await this.page.locator(activitylocator.activityStartTime).fill(activityTime);
+
     const RepeatsType = this.page.locator(activitylocator.ActivityType);
     await RepeatsType.selectOption({ label: "Weekly" });
     const repectAfter_on = this.page.locator(activitylocator.Repeat_after_on);
@@ -123,7 +222,19 @@ async SelectStudent(){
     console.log(this.page.locator(activitylocator.After_end_date));
     await this.page.locator(activitylocator.After_end_date).fill(`${date}`);
   }
-  async RepeatWeeklyON (){
+  async RepeatWeeklyON() {
+    const CurrentDate = TestUtils.getCurrentDate();
+    console.log("Rendum date ", CurrentDate);
+
+    await this.page
+      .locator(activitylocator.activityStartDate)
+      .fill(CurrentDate);
+    await this.page.waitForTimeout(5000);
+    const activityTime = TestUtils.generateRandomTime();
+    console.log(" Start time of Activity ", activityTime);
+    await this.page
+      .locator(activitylocator.activityStartTime)
+      .fill(activityTime);
     const RepeatsType = this.page.locator(activitylocator.ActivityType);
     await RepeatsType.selectOption({ label: "Weekly" });
     const repectAfter_on = this.page.locator(activitylocator.Repeat_after_on);
@@ -133,18 +244,76 @@ async SelectStudent(){
     //await expect(this.page.locator(activitylocator.After_end_date)).toBeVisible();
     console.log(this.page.locator(activitylocator.After_end_date));
     await this.page.locator(activitylocator.RepeatEndDateTime).fill(`${date}`);
+  }
+  async RepeatMonthlyON() {
 
+    const CurrentDate = TestUtils.getCurrentDate();
+    console.log("Rendum date ", CurrentDate);
+
+    await this.page.locator(activitylocator.activityStartDate).fill(CurrentDate);
+    await this.page.waitForTimeout(5000);
+    const activityTime = TestUtils.generateRandomTime();
+    console.log(" Start time of Activity ", activityTime);
+    await this.page.locator(activitylocator.activityStartTime).fill(activityTime);
+
+
+    const RepeatsType = this.page.locator(activitylocator.ActivityType);
+    await RepeatsType.selectOption({ label: "Monthly" });
+    const repectAfter_on = this.page.locator(activitylocator.Repeat_after_on);
+    await repectAfter_on.selectOption({ label: "On" });
+    const Monthlydate = TestUtils.getDateAfter2Months();
+    console.log(" ae gi ye ni Monthlydate", Monthlydate);
+    //await expect(this.page.locator(activitylocator.After_end_date)).toBeVisible();
+    console.log(this.page.locator(activitylocator.After_end_date));
+    await this.page
+      .locator(activitylocator.RepeatEndDateTime)
+      .fill(`${Monthlydate}`);
+  }
+  async RepeatMonthlyAfter() {
+    const CurrentDate = TestUtils.getCurrentDate();
+    console.log("Rendum date ", CurrentDate);
+
+    await this.page
+      .locator(activitylocator.activityStartDate)
+      .fill(CurrentDate);
+    await this.page.waitForTimeout(5000);
+    const activityTime = TestUtils.generateRandomTime();
+    console.log(" Start time of Activity ", activityTime);
+    await this.page
+      .locator(activitylocator.activityStartTime)
+      .fill(activityTime);
+    const RepeatsType = this.page.locator(activitylocator.ActivityType);
+    await RepeatsType.selectOption({ label: "Monthly" });
+    const repectAfter_on = this.page.locator(activitylocator.Repeat_after_on);
+    await repectAfter_on.selectOption({ label: "After" });
+    const date = TestUtils.getDateAfter2Months();
+    console.log(" ae gi ye ni ", date);
+    //await expect(this.page.locator(activitylocator.After_end_date)).toBeVisible();
+    console.log(this.page.locator(activitylocator.After_end_date));
+    await this.page.locator(activitylocator.RepeatEndDateTime).fill(`${date}`);
   }
 
-  async time() {
-    // Ab yahan dekh kar sahi text use karein
-    // await this.page.locator(".ng-option:has-text('15 Min')").click();
-  }
-
-  async IsPlacementSchoolActivity() {
+  async IsPlacementSchoolActivitychekbox() {
     // console.log(" haider alu ")
     await this.page.check(activitylocator.IsPlacementSchoolActivity);
-    await this.page.waitForTimeout(4000);
+    //await this.page.waitForTimeout(4000);
+  }
+  async IsPlacementSchoolClientSelect(partialClientName: string) {
+    await this.page
+      .locator(activitylocator.clientSearchInput)
+      .fill(partialClientName);
+    const MatchingClientName = this.page.locator(
+      `.ng-option:has-text("${partialClientName}")`
+    );
+    const clientCount = await MatchingClientName.count();
+    if (clientCount > 0) {
+      await MatchingClientName.first().click();
+      console.log(`Selected student with partial match: ${partialClientName}`);
+    } else {
+      throw new Error(
+        `No student found with partial name: ${partialClientName}`
+      );
+    }
   }
   async RepeatchekBox() {
     await this.page.check(activitylocator.RepeatcheckBox);
@@ -157,7 +326,7 @@ async SelectStudent(){
     await this.page.waitForTimeout(1000);
   }
 
-  async screenshotDropdown() {
-    await this.page.screenshot({ path: "dropdown-open.png" });
-  }
+  // async screenshotDropdown() {
+  //   await this.page.screenshot({ path: "dropdown-open.png" });
+  // }
 }
